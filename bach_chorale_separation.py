@@ -104,8 +104,10 @@ def write_raw(music21_score, newfilename, offset):
                 lastPitch = []
                 if piece.parts[part_num].id == "AddedChords":
                     # continue
-                    rn = roman.romanNumeralFromChord(n, SONG_KEY)
-                    rn = rn.figure
+                    #rn = roman.romanNumeralFromChord(n, SONG_KEY)
+                    #rn = rn.figure
+
+                    rn = n.root().name + n.quality
                     file_out.write(str(n.offset + offset) + '\t' + str(rn) + '\t' + piece.parts[part_num].id + '\n')
                     addToDict(full_times, n.offset + offset, piece.parts[part_num].id, rn)
                     lastPitch = [rn]
@@ -399,7 +401,8 @@ def add_chords(s):
     
 # main
 def main():
-    work = converter.parse("C:\\Python27\\lib\\site-packages\\music21\\corpus\\bach\\bwv227.11.mxl")
+    work = corpus.parse('bach/bwv227.11.mxl')
+    #work = converter.parse("C:\\Python27\\lib\\site-packages\\music21\\corpus\\bach\\bwv227.11.mxl")
     work = transpose(work) # jbocarsly addition, transpose
     work = add_chords(work)
     # work.show()
