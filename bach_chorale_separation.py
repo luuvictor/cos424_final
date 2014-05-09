@@ -1,6 +1,23 @@
 from music21 import *
 import sys
 
+# target dict is [ time (double) -> dict (key -> value) ]
+#   hashmap[ doubles -> fixed list of tuples ]
+# creates the binding if necessary
+
+def toPair(t):
+    return ('\"' + str(t[0]) + '\":\"' + str(t[1]) + '\"')
+
+def addToDict(target_dict, time, key, value):
+    if not time in target_dict:
+        print "initializing tuple list"
+        target_dict[time] = []
+    else:
+        print "list clean"
+
+    target_dict[time].append(toPair((key, value)))
+    return target_dict    
+
 def write_raw(music21_score, newfilename, offset):
     # piece = corpus.parse(filename)
     piece = music21_score
@@ -15,13 +32,28 @@ def write_raw(music21_score, newfilename, offset):
     # store most recent thing being played 
     lastPitch = [1000]
     currentOffset = 0;
+
+    # a "measures:" list contains "beats" objects
+    # "beats" contains 8 "beat" objects
+    # "beat" object - "time", "chord", "s", "a", "t", "b"
+
+    # 1. make a big dictionary (time -> info)
+    #       substitute all file_out.write with filling in this table
+    #           only the "first" part of each entry needs to "initialize row"
+
+    # 2. go through the big dictionary in TIME order
+    #       - group each set of 8 elements into a list L "beats"
+    #           - make sure that list L is "indexed" correctly
+    #       - add all of the list Ls one big list of lists "measures"
+
+    # step one, declare 2d matrix
+    full_times = {}
     
     for part_num in range(num_parts):
         # print in order, each note
         lastPitch = [1000]
         currentOffset = 0;
-        
-        
+                
         for n in piece.parts[part_num].flat.notes:
 
             if piece.parts[part_num].id != "Soprano" and piece.parts[part_num].id != "Alto" and piece.parts[part_num].id != "Tenor" and piece.parts[part_num].id != "Bass":
@@ -35,12 +67,13 @@ def write_raw(music21_score, newfilename, offset):
             # roundup = 0
             if modulo == 1 or modulo == 3:
                 print "16th", this_note_offset
-            #    continue #skip the 16th notes!
+                continue #skip the 16th notes!
 
             ############
             while currentOffset < this_note_offset:
                 for pitch_num in lastPitch:
                     file_out.write(str(currentOffset) + '\t' + str(-pitch_num) + '\t' + piece.parts[part_num].id + '\n')
+                    full_times = addToDict(full_times, currentOffset, piece.parts[part_num].id, -pitch_num)
                 currentOffset += 0.5
 
             # if currentOffset > this_note_offset,
@@ -54,6 +87,7 @@ def write_raw(music21_score, newfilename, offset):
             # so we now know that currentOffset == this_noteOffset
             if type(n) is note.Note:
                 file_out.write(str(n.offset + offset) + '\t' + str(n.midi) + '\t' + piece.parts[part_num].id + '\n')
+                full_times = addToDict(full_times, n.offset + offset, piece.parts[part_num].id, n.midi)
                 # print str(n.offset + offset) + '\t' + str(n.midi) + '\t' + piece.parts[part_num].id + '\n'
                 lastPitch = [n.midi]
             elif type(n) is chord.Chord:
@@ -61,9 +95,12 @@ def write_raw(music21_score, newfilename, offset):
                 lastPitch = []
                 for pitch in n.pitches: 
                     file_out.write(str(n.offset + offset) + '\t' + str(pitch.midi) + '\t' + piece.parts[part_num].id + '\n')
-                    lastPitch.append(pitch.midi)            
+                    full_times = addToDict(full_times, n.offset + offset, piece.parts[part_num].id, pitch.midi)
+                    lastPitch.append(pitch.midi)
+                    break
             elif type(n) is note.Rest:
                 file_out.write(str(n.offset + offset) + '\t' + '1000' + '\t' + piece.parts[part_num].id + '\n')
+                full_times = addToDict(full_times, n.offset + offset, piece.parts[part_num].id, 1000)
                 lastPitch = [1000]
             else:
                 print("unknown type")
@@ -72,7 +109,74 @@ def write_raw(music21_score, newfilename, offset):
             # prepare to start examining new notes
             currentOffset += 0.5
 
+    # print full_times
+
+    offset = 0 # absolute index into full_times
+    this_measure_num = 0
+    all_measures = []
+    this_measure = []
+
+    beats = [] # list of ( lists of (tuples) )
+
+    
+    this_tuple_list = full_times.get(offset)
+    while this_tuple_list:
+
+        # check if entered new measure
+        new_measure = (int) (offset / 4)
+        if new_measure > this_measure_num:
+            this_measure_num = new_measure
+
+            # save old "this_measure"
+            all_measures.append(this_measure)
+            # print this_measure
+            # print " committed to all_measures -------------"
+
+            # initialize new "this_measure"
+            this_measure = []
+
+        # add the appropriate time
+        this_beat = this_tuple_list
+        new_time = offset % 4 + 1
+        this_beat.append(toPair(("time", new_time)))        
+
+        this_measure.append(this_beat)
+        # print this_measure
+        # print " adding beat to this measure -------------"
+
+        # keep checking each quarter note        
+        offset += 0.5
+        this_tuple_list = full_times.get(offset)
+
+    
+    
     file_out.close()
+    
+    #print "-----"
+    #print all_measures[0]
+    #print "-----"
+    #print all_measures[1]
+    #print "-----"
+
+    # ADDS EXTRA COMMA TO 3RD TO LAST LINE
+    print '{\n"measures": ['
+    for measure in all_measures:
+        print '{"beats":\n['
+        print ('{' +
+        '},\n{'.join([', '.join(n) for n in measure]) + '}')
+        print ']\n},'
+    print ']\n}'
+    
+    final_measures = []
+    for measure in all_measures:
+        final_measures.append(("beats", measure))
+
+    final_measures
+
+    final_final_measure = ("measures", final_measures)
+
+    # print final_final_measure
+    
 
 # actually reads chorales and stuff
 def get_chorales():
@@ -261,9 +365,9 @@ def add_chords(s):
     
 # main
 def main():
-    # work = converter.parse("C:\\Python27\\lib\\site-packages\\music21\\corpus\\bach\\bwv227.11.mxl")
-    # write_raw(work, "mystuff", 0)
-    get_chorales()
+    work = converter.parse("C:\\Python27\\lib\\site-packages\\music21\\corpus\\bach\\bwv227.11.mxl")
+    write_raw(work, "mystuff", 0)
+    # get_chorales()
     # read_chorales()
 
 # stuff
