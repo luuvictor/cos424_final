@@ -358,6 +358,7 @@ def add_chords(s):
   '''given a stream and the key its in, adds a new part called 'chords' which has the closed form of the chords
   make by the other parts at the latin name of the chords as lyrics to that track'''
   sChords = s.chordify()
+  sChords.id = 'AddedChords'
   s.insert(0, sChords)
   for c in sChords.flat.getElementsByClass('Chord'):
     c.closedPosition(forceOctave=4, inPlace=True)
