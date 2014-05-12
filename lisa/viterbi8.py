@@ -70,7 +70,7 @@ def Viterbi(music, model, triplets):
     #print "maxProb = ", maxProb
 
     #####    
-    for m in range(1,M): # for each subsequent beat of the piece... (m is "time" but I don't want to confuse it with the "time" random variable)
+    for m in range(1,M+1): # for each subsequent beat of the piece... (m is "time" but I don't want to confuse it with the "time" random variable)
         # this will be the mth columns of maxProb and bestPrevTriplet
         maxProbCol = [];
         bestPrevTripletCol = [];

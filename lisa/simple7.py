@@ -22,7 +22,7 @@ def simpleModel(music, model):
 			best_a=a
 	seq.append(best_a)
 
-	for m in range(1, M):
+	for m in range(1, M+1):
 		max_prob=float("-inf")
 		best_a=-1
 
