@@ -68,17 +68,3 @@ def generate_alto(all_chorales, filename):
 	#print "notes = ", simpleModel(all_chorales[filename], model)
 	#print "to_array.stitchIn(stitchFilename, notes)"
 
-
-
-#print simpleModel(all_chorales['bwv436.mxl.csv'], model)
-#music=all_chorales['MAJORbwv438.mxl.csv']
-#print simpleModel(music, model)
-
-
-#print Viterbi(all_chorales['bwv_test.csv'], model, triplets)
-"""
-for chorale in all_chorales:
-    print Viterbi(all_chorales[chorale], model, triplets)
-    break
-"""
-
