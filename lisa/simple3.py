@@ -1,16 +1,5 @@
+import sys, os
 from pdf3 import *
-
-triplets_dict={}
-model=getPDF(triplets_dict)
-#print "len(triplets) = ", len(triplets_dict)
-#print triplets_dict
-
-triplets=[]
-for key in triplets_dict:
-    triplets.append(triplets_dict[key])
-
-
-all_chorales = to_array.read_all_csv_chorales()
 
 def simpleModel(music, model):
 	M = int(len(music.keys())/2.0)
@@ -53,13 +42,18 @@ def simpleModel(music, model):
 	print "cnt = ", cnt
 	return seq
 
-print simpleModel(all_chorales['bwv438.mxl.csv'], model)
+def generate_alto(all_chorales, filename):
+	DIR = 'simple3'
 
+	triplets_dict={}
+	model=getPDF(triplets_dict)
+	triplets=[]
+	for key in triplets_dict:
+	    triplets.append(triplets_dict[key])
 
-#print Viterbi(all_chorales['bwv_test.csv'], model, triplets)
-"""
-for chorale in all_chorales:
-    print Viterbi(all_chorales[chorale], model, triplets)
-    break
-"""
-
+	if not os.path.exists(DIR):
+		os.mkdir(DIR)
+	stitchFilename=DIR+'/'+filename[5:]
+	
+	with open(stitchFilename, 'w') as f:
+		f.write(str(simpleModel(all_chorales[filename], model)))

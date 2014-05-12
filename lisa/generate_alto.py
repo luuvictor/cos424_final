@@ -1,10 +1,13 @@
-import viterbi4, viterbi8, simple6, simple1, simple2, simple3, simple7, to_array
+import viterbi, viterbi4, viterbi8, simple6, simple1, simple2, simple3, simple7, to_array
 
 all_chorales = to_array.read_all_csv_chorales()
 
 file1='MAJORbwv411.mxl.csv'
 file2='MAJORbwv430.mxl.csv'
 
+viterbi.generate_alto(all_chorales, file1)
+
+"""
 # Simple model
 simple2.generate_alto(all_chorales, file1)
 
@@ -25,3 +28,4 @@ viterbi4.generate_alto(all_chorales, file1)
 
 # Viterbi with links between alto notes
 viterbi8.generate_alto(all_chorales, file1)
+"""

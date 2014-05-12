@@ -139,7 +139,8 @@ def addCount(C, mxlname, triplets):
 
 		# ALTO
 		child = abs(int(cur[ALTO]))
-		parents = {ALTO:abs(int(prev[ALTO])), CHORD:cur[CHORD], SOPRANO:abs(int(cur[SOPRANO]))}
+		#parents = {ALTO:abs(int(prev[ALTO])), CHORD:cur[CHORD], SOPRANO:abs(int(cur[SOPRANO]))} # with links btwn alto
+		parents = {CHORD:cur[CHORD], SOPRANO:abs(int(cur[SOPRANO]))} # without links btwn alto
 		addToDict(D[ALTO], child, parents)
 
 		# TENOR

@@ -23,13 +23,7 @@ def Viterbi(music, model, triplets):
     #!
     # list of triplets (chord, current alto note, previous alto eighth note), if you haven't done this already
     # this may vary if you have a fancy way of accessing... but the rest of the code relies on having this list of all triplets
-    """
-    triplets = []
-    for chord in chords:
-        for note1 in notes:
-            for note2 in notes:
-                triplets.append([chord, note1, note2])
-    """
+
     # for i in range(0,len(triplets)): print triplets[i]
     
     #####
@@ -114,7 +108,8 @@ def Viterbi(music, model, triplets):
                 alto_prev=triplets[j][1]
 
                 pq = model[CHORD](chord, {CHORD:chord_prev, TIME:time})
-                pb = model[ALTO](alto, {ALTO:alto_prev, CHORD:chord, SOPRANO:soprano})
+                #pb = model[ALTO](alto, {ALTO:alto_prev, CHORD:chord, SOPRANO:soprano}) # with links btwn alto
+                pb = model[ALTO](alto, {CHORD:chord, SOPRANO:soprano}) # without links btwn alto
                 pb1= model[ALTO1](alto1, {ALTO1:alto_prev, ALTO:alto})
 
                 #prob = pq+pa+pb+pc+pd+pa1+pb1+pc1+pd1+maxProb[m-1][j]
