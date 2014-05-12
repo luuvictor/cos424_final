@@ -159,22 +159,8 @@ def Viterbi(music, model, triplets):
     return seq
 
 
-def generate_alto(all_chorales, filename):
-    DIR = 'viterbi'
-
-    triplets_dict={}
-    model=getPDF(triplets_dict)
-    triplets=[]
-    for key in triplets_dict:
-        triplets.append(triplets_dict[key])
-
-    if not os.path.exists(DIR):
-        os.mkdir(DIR)
-    stitchFilename=DIR+'/'+filename[5:]
-    
-    with open(stitchFilename, 'w') as f:
-        f.write(str(Viterbi(all_chorales[filename], model, triplets)))
-
+def generate_alto(model, all_chorales, filename):
+    return Viterbi(all_chorales[filename], model, triplets)
 
 
 

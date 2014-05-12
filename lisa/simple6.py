@@ -47,21 +47,8 @@ def simpleModel(music, model):
 	
 	return seq
 
-def generate_alto(all_chorales, filename):
-	DIR = 'simple6'
-
-	triplets_dict={}
-	model=getPDF(triplets_dict)
-	triplets=[]
-	for key in triplets_dict:
-	    triplets.append(triplets_dict[key])
-
-	if not os.path.exists(DIR):
-		os.mkdir(DIR)
-	stitchFilename=DIR+'/'+filename[5:]
-	
-	with open(stitchFilename, 'w') as f:
-		f.write(str(simpleModel(all_chorales[filename], model)))
+def generate_alto(model, all_chorales, filename):
+	return simpleModel(all_chorales[filename], model)
 
 	#print "# simple6.py"
 	#print "stitchFilename='"+filename[5:]+"'"
