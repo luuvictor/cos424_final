@@ -1,9 +1,27 @@
 #!/usr/bin/python -tt
 
-import viterbi, viterbi4, viterbi8, simple6, simple1, simple2, simple3, simple7, to_array, pdf, pdf1, pdf2, pdf3, pdf4, pdf6, pdf7, pdf8, os, sys
+import viterbi, viterbi4, viterbi8, viterbi9, simple6, simple1, simple2, simple3, simple7, to_array, pdf, pdf1, pdf2, pdf3, pdf4, pdf6, pdf7, pdf8, pdf9
+import os, sys
 
 
 def main():
+  input_list_name = sys.argv[1]
+  in_file = open(input_list_name, 'rU')
+  for line in in_file:
+    line = line.rstrip('\n')
+    
+    #i know this is weird i'm sorry. The infile has the .mxl.csv filenames!
+    mode = line[:5]
+    cn = line[5:-8]
+    
+    print mode, cn
+    
+    predict_viterbi9(cn, mode)
+    print 'success running:   ' + cn
+    #except: 'failure running:   ' + cn
+  
+
+def main2(): #not using this as the main right now... but its the real main
   input_list_name = sys.argv[1]
   in_file = open(input_list_name, 'rU')
   for line in in_file:
@@ -151,7 +169,25 @@ def run_all_predictions(chorale_name,MODE):
   with open(stitchFilename, 'w') as f:
     f.write(str(viterbi8.generate_alto(model, triplets, all_chorales, filename)))
 
-
+def predict_viterbi9(chorale_name,MODE): #predicts for viterbi9, the new eighth note model
+  
+  all_chorales = to_array.read_all_csv_chorales()
+  filename= MODE + chorale_name + '.mxl.csv'
+  
+  DIR = 'viterbi9'
+  triplets_dict={}
+  model=pdf9.getPDF(triplets_dict)
+  triplets=[]
+  for key in triplets_dict:
+      triplets.append(triplets_dict[key])
+      
+  if not os.path.exists(DIR):
+      os.mkdir(DIR)
+  stitchFilename=DIR+'/'+filename[5:]
+  print stitchFilename
+  with open(stitchFilename, 'w') as f:
+    f.write(str(viterbi8.generate_alto(model, triplets, all_chorales, filename)))
+  
 
 if __name__ == '__main__':
   main()

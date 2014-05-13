@@ -1,9 +1,11 @@
  #!/usr/bin/python -tt
 
-
 import sys, os, ast
+
+#these will probably mostly fail because i'm in the wrong directory. 
 from addAlto import actuallyReplaceAlto
 from to_array import transpose
+
 from music21 import *
 
 def main():

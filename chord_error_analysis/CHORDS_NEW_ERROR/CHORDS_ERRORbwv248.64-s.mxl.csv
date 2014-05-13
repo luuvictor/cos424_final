@@ -1,0 +1,17 @@
+original_S,original_A,original_T,original_B,original_chord,simple2,simple3,simple1,simple7,simple6,viterbi4,viterbi4_chords,viterbi8,viterbi8_chords,simple2CHORD,simple3CHORD,simple1CHORD,simple7CHORD,simple6CHORD,viterbi4CHORD,viterbi8CHORD
+-1000,-1000,-1000,-1000,1000,1000,1000,1000,1000,1000,64,Gmajor,65,Fmajor,Eother,Eother,Eother,Eother,Eother,Eother,Fother
+-1000,-1000,-1000,-1000,1000,1000,1000,1000,1000,1000,67,Cmajor,67,Cmajor,Eother,Eother,Eother,Eother,Eother,Eminor,Eminor
+-1000,-1000,-1000,-1000,1000,1000,1000,1000,1000,1000,67,Cmajor,62,Bdiminished,Eother,Eother,Eother,Eother,Eother,Eminor,Eother
+64,60,55,48,Cmajor,60,60,60,60,60,60,Cmajor,57,Fmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Aminor
+69,60,57,53,Fmajor,60,60,60,60,60,59,Gmajor,59,Gmajor,Fmajor,Fmajor,Fmajor,Fmajor,Fmajor,Bother,Bother
+67,64,60,52,Cmajor,60,60,60,64,64,59,Cmajor,60,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor
+65,57,53,57,Fmajor,60,60,60,57,57,60,Cmajor,60,Cmajor,Fmajor,Fmajor,Fmajor,Fmajor,Fmajor,Fmajor,Fmajor
+64,60,55,55,Cmajor,60,60,60,60,60,60,Cmajor,60,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor
+62,60,57,53,Dminor,59,57,57,60,60,60,Cmajor,60,Cmajor,Bdiminished,Dminor,Dminor,Dminor,Dminor,Dminor,Dminor
+-62,59,50,55,Gmajor,59,59,59,59,59,60,Fmajor,57,Fmajor,Gmajor,Gmajor,Gmajor,Gmajor,Gmajor,Cother,Gother
+64,60,55,48,Cmajor,60,60,60,60,60,60,Fmajor,55,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor,Cmajor
+71,68,64,52,Emajor,62,59,68,68,68,1000,Fmajor,1000,Dminor,Eother,Eother,Emajor,Emajor,Emajor,Eother,Eother
+72,69,64,57,Aminor,64,60,64,69,69,60,Fmajor,67,Ediminished,Aminor,Aminor,Aminor,Aminor,Aminor,Aminor,Aminor
+72,69,60,53,Fmajor,64,60,65,69,69,60,Fmajor,60,Fmajor,Fother,Fother,Fother,Fmajor,Fmajor,Fother,Fother
+71,69,65,50,Bdiminished,62,59,65,69,69,67,Cmajor,67,Gmajor,Bdiminished,Bdiminished,Bdiminished,Bdiminished,Bdiminished,Gmajor,Gmajor
+71,68,64,52,Emajor,62,59,68,68,68,Eother,Eother,Emajor,Emajor,Emajor,NOT_FOUND,NOT_FOUND

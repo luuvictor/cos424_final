@@ -134,6 +134,52 @@ def replaceAltoBETTER(old_score, list_notes, part_id, clef_name,quar_len=1): #ch
   return s
 
 
+
+def actuallyReplaceAlto(old_score, list_notes, part_id, clef_name,quar_len=1): #change quar_len to 0.5 for eighth notes
+  ''' this one actually gets rid of the other alto'''
+  s = old_score
+  old_part = None
+  
+  for part in s.parts:
+    #print part.id
+    #if (str(s.id) == str(part_id)):
+    if ('Alto' in str(part.id)):
+     old_part = part
+  if old_part == None:
+    print part_id
+    print 'part_id doesn\'t seem to match any part in the old_score!!!!'
+    return None
+  
+  
+  newPart = stream.Part()
+  
+  ins = instrument.fromString(part_id)
+  cl = clef.clefFromString(clef_name)
+  ks = old_part.flat.getElementsByClass(key.KeySignature)[0]
+  ts = meter.TimeSignature('c')
+  sy_layout = old_part.flat.getElementsByClass(layout.SystemLayout)[0]
+  #st_layout = old_part.flat.getElementsByClass(layout.StaffLayout)[0]
+  
+  
+  newPart.insert(0, ins)
+  
+  m1 = stream.Measure()
+  m1.insert(0, cl)
+  m1.insert(0, ks)
+  m1.insert(0, ts)
+  m1.insert(0, sy_layout)
+  #m1.insert(0, st_layout)
+  
+  notes = [midiToNote(x,quar_len) for x in list_notes] #notes is a list of actual list objects
+  for n in notes:
+    newPart.append(n)
+  
+  newPart.show('text')
+  s.insert(0,newPart)
+  s.remove(old_part)
+  print s
+  return s
+
 def main():
   
   
@@ -169,13 +215,14 @@ def main():
   #list_notes = [60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 55, 55, 52, 54, 55, 62, 55, 59, 57, 55, 55, 55, 55, 55, 55, 55, 55, 55, 57, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 55, 55, 52, 54, 55, 62, 55, 59, 57, 55, 55, 55, 55, 55, 55, 55, 55, 60, 60, 60, 60, 59, 59, 59, 57, 57, 57, 56, 56, 59, 52, 56, 57, 52, 52, 52, 52, 52, 52, 52, 55, 55, 55, 55, 55, 60, 62, 60, 60, 59, 59, 59, 60, 55, 55, 59, 55, 55, 59, 62, 60, 60, 57, 55, 55, 55]
   #filename = 'bwv433'
   #list_notes = [1000, 55, 57, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 55, 55, 52, 54, 55, 62, 55, 59, 57, 55, 55, 55, 55, 55, 55, 55, 55, 55, 57, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 55, 55, 52, 54, 55, 62, 55, 59, 57, 55, 55, 55, 55, 55, 55, 55, 55, 60, 60, 60, 60, 59, 59, 59, 57, 57, 57, 56, 56, 59, 52, 56, 57, 52, 52, 52, 52, 52, 52, 52, 55, 55, 55, 55, 55, 60, 62, 60, 60, 59, 59, 59, 60, 55, 55, 59, 55, 55, 59, 62, 60, 60, 57, 55, 55, 55]
-
   data = '[[54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [52, 52], [59, 57]]'
+  #data = '[[54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [54, 52], [59, 57], [54, 55], [51, 53], [52, 52], [59, 57]]'
   data_mod = data.replace('[','').replace(']','')
   data_mod = data_mod.split(',')
   list_notes = [int(x.rstrip()) for x in data_mod]
   print list_notes
   filename = 'bwv411'
+  filename = 'bwv433'
   
   score = corpus.parse(filename)
   score_C = transpose(score)
@@ -183,7 +230,7 @@ def main():
   
   replaceAltoBETTER(score, list_notes, 'Alto', 'G4',quar_len=0.5).show()
   #replaceAltoBETTER(score_C, list_notes, "Alto", "G4").show()
-
+  #actuallyReplaceAlto(score,list_notes,'Alto', 'G4').show() 
   
 
 
