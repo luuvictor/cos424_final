@@ -84,9 +84,9 @@ def midiToNote(midi_number,quar_len=1):#default quarter notes
   
   if m == 1000: item = note.Rest()
   else:
-    p = pitch.Pitch()
-    p.midi = m
-    item = note.Note(p.name,quarterLength = quar_len)
+    #p = pitch.Pitch()
+    #p.midi = m
+    item = note.Note(midi_number,quarterLength = quar_len)
   return item 
   
 

@@ -1,6 +1,6 @@
  #!/usr/bin/python -tt
 
-from addAlto import replaceAltoBETTER
+from addAltoMOD import replaceAltoBETTER
 from to_array import transpose
 from music21 import *
 import sys, os, ast
